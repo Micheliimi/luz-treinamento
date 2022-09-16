@@ -1,31 +1,20 @@
-/******************************************************************************
-
-                            Online C Compiler.
-                Code, Compile, Run and Debug C program online.
-Write your code in this editor and press "Run" button to compile and execute it.
-
-*******************************************************************************/
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
 #include <math.h>
 
-void alocaEspaco(int P[], int n) 
+int* alocaEspaco(int n) 
 {
-  P = (int*)malloc(n * sizeof (int));
+  return (int*)malloc(n * sizeof (int));
 }
 
-void geraNumeros(int P[],int n)
+void geraNumeros(int P[], int n)
 {
   int i;
-  alocaEspaco(P, n);
-  
   for (i = 0; i < n; i+= 1) {
   P[i] = (rand() % n); 
   }
 }
-
 void imprimeLista(int P[], int n)
 {
   int i;
@@ -35,6 +24,7 @@ void imprimeLista(int P[], int n)
   }
 }
 
+/*-------------------------------------------------------------------*/ 
 void bubbleSort(int P[], int n) ////////////////// bubbleSort
 {
   int i, j, aux, continua, fim;
@@ -53,8 +43,13 @@ void bubbleSort(int P[], int n) ////////////////// bubbleSort
   }while(continua != 0);
   
 }
+/*------------------------------------------------------------------*/
+/*
+INSERTION SORT
+Vai levando menor número pra esqueda e move as cartas maiores pra frente.
+*/
 
-void insertionSort(int P[], int n) ///////////////// insertionSort - Vai levando menor número pra esqueda.
+void insertionSort(int P[], int n)
 {
   int j, i, aux;
   
@@ -62,18 +57,59 @@ void insertionSort(int P[], int n) ///////////////// insertionSort - Vai levando
       // inicia pelo segundo elemento.  
     
     aux = P[i];
-    
     // se j não é o primeiro elemento e j/auxi atual é menor que o número anterior, continua o for!
     //Se não, volta com o próximo i.
     for(j = i; (j > 0) && (aux < P[j - 1]); j -= 1) {
-      aux = P[j];
       P[j] = P[j - 1];
-      P[j - 1] = aux;
+    }
+    P[j] = aux;
+  }
+}
+
+/*----------------------------------------------------------------------------------*/
+
+/*SELECTION SORT
+Procura primeiro menor elemento e troca 
+com a posição do i, lista fica ordenada conforme i vai acrescentando e j achando o menor.
+*/
+
+void selectionSort(int P[], int n)
+{
+  int j, i, aux, minIndex;
+  
+  for (j = 0; j < n; j += 1) {
+    minIndex = j;
+    
+    for(i = j; i < n; i += 1) { 
+      if (P[i] < P[minIndex]) {
+        minIndex = i;
+      }
+    }
+    if (P[j] > P[minIndex]) {
+      aux = P[j];
+      P[j] = P[minIndex];
+      P[minIndex] = aux;
     }
   }
 }
 
 /*-----------------------------------------------------------------------------------------------*/
+/* 
+QUICK SORT
+Escolhe o pivô
+Passa pra esquerda dele os números menores que ele
+Passa pra direita os numeros maiores
+No fim poẽ pivô no lugar certo e..
+Divide duas partes, escolhe novo pivô e faz o mesmo procedimento
+
+---> Vantagens: Não precisa de Vetor Auxilar (não gasta memória extra) e 
+no melhor caso, apresenta O(n log n).
+---> Desvantagem: pode apresentar, no pior caso, O(n²) 
+Pior caso - vetor ordenado ou quase ordenado
+Ao escolher o pivô em extremidades, um lado fica vazio e outro fica n-1
+Pega o lado que não ta vazio e repete
+Se o vetor estivesse desordenado, em cada passo, ia ordenado mais números*/
+
 int particiona(int P[], int comeco, int fim) {
   int esq, dir, pivo, aux;
   
@@ -100,20 +136,6 @@ int particiona(int P[], int comeco, int fim) {
   return esq;
 }
 
-/* Escolhe o pivô
-Passa pra esquerda dele os números menores que ele
-Passa pra direita os numeros maiores
-No fim poẽ pivô no lugar certo e..
-Divide duas partes, escolhe novo pivô e faz o mesmo procedimento
-
-
----> Vantagens: Não precisa de Vetor Auxilar (não gasta memória extra) e 
-no melhor caso, apresenta O(n log n).
----> Desvantagem: pode apresentar, no pior caso, O(n²) 
-Pior caso - vetor ordenado ou quase ordenado
-Ao escolher o pivô em extremidades, um lado fica vazio e outro fica n-1
-Pega o lado que não ta vazio e repete
-Se o vetor estivesse desordenado, em cada passo, ia ordenado mais números*/
 void quickSort(int P[], int comeco, int fim) {
   int pivo;
       
@@ -123,28 +145,22 @@ void quickSort(int P[], int comeco, int fim) {
     quickSort(P, pivo + 1, fim); // Não inclui o pivô
   }
 }
-/*--------------------------------------------------------------------------------------------------------*/
 
-void selectionSort(int P[], int n) ///////////////// selectionSort - Procura primeiro menor elemento e troca 
-//com a posição do i, lista fica ordenada conforme i vai acrescentando e j achando o menor.
-{
-  int j, i, aux, minIndex;
-  
-  for (j = 0; j < n; j += 1) {
-    minIndex = j;
-    
-    for(i = j; i < n; i += 1) { 
-      if (P[i] < P[minIndex]) {
-        minIndex = i;
-      }
-    }
-    if (P[j] > P[minIndex]) {
-      aux = P[j];
-      P[j] = P[minIndex];
-      P[minIndex] = aux;
-    }
-  }
-}
+/*--------------------------------------------------------------------------------------------------------*/
+/*
+MERGE SORT
+Lema: Dividir para conquistar!
+Divido no meio até sobrar um elemento. Depois os elementos vão sendo combinados/megeados de forma ordenada.
+
+O mergeSort vai trabalhar com RECURSÃO.
+São modelagens de funções que, para resolver um problema
+faz chamadas a si mesma, simplificando a solução quebrando a problema
+em subproblemas do mesmo tipo.
+
+Vantagens: complexidade de tempo, tanto no melhor, quanto no pior caso é de O(n log n) - No melhor caso 
+ou médio, é equivalente à complexidade do quick sort;
+Desvantagem: Faz uso de n unidades (O(n)) de memória auxiliar. É necessário um vetor auxiliar.
+*/
 
 void merge(int P[], int comeco, int meio, int fim) {
   int com1, com2, comAux, tam;
@@ -190,20 +206,6 @@ void merge(int P[], int comeco, int meio, int fim) {
   free(vetAux); //Libera memória do vetor auxiliar
 }
 
-
-/*
-Lema: Dividir para conquistar!
-Divido no meio até sobrar um elemento. Depois os elementos vão sendo combinados/megeados de forma ordenada.
-
-O mergeSort vai trabalhar com RECURSÃO.
-São modelagens de funções que, para resolver um problema
-faz chamadas a si mesma, simplificando a solução quebrando a problema
-em subproblemas do mesmo tipo.
-
-Vantagens: complexidade de tempo, tanto no melhor, quanto no pior caso é de O(n log n) - No melhor caso 
-ou médio, é equivalente à complexidade do quick sort;
-Desvantagem: Faz uso de n unidades (O(n)) de memória auxiliar. É necessário um vetor auxiliar.
-*/
 void mergeSort(int P[], int comeco, int fim) {
   /* O vetor será dividido até restar um elemento*/
   int meio;
@@ -218,16 +220,17 @@ void mergeSort(int P[], int comeco, int fim) {
   }
 }
 
+/*--------------------------------------------------------------------------*/
 
 int main()
 {
   int i, aux, j;
   int op;
-  long int n;
+  int n;
   
   printf("Quantos registros vocês quer inserir no vetor?\n");
-  scanf("%ld", &n);
-  int *P;
+  scanf("%d", &n);
+  int *P = alocaEspaco(n);
   geraNumeros(P, n);
   imprimeLista(P, n);
   
