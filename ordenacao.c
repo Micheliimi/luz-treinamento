@@ -221,11 +221,12 @@ void mergeSort(int P[], int comeco, int fim) {
 
 int main()
 {
-  int n, i, aux, j;
+  int i, aux, j;
   int op;
+  long int n;
   
   printf("Quantos registros vocês quer inserir no vetor?\n");
-  scanf("%d", &n);
+  scanf("%ld", &n);
   int *P;
   geraNumeros(P, n);
   imprimeLista(P, n);
