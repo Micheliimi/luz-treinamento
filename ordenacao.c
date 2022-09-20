@@ -15,6 +15,7 @@ void geraNumeros(int P[], int n)
   P[i] = (rand() % n); 
   }
 }
+
 void imprimeLista(int P[], int n)
 {
   int i;
@@ -25,7 +26,8 @@ void imprimeLista(int P[], int n)
 }
 
 /*-------------------------------------------------------------------*/ 
-void bubbleSort(int P[], int n) ////////////////// bubbleSort
+
+void bubbleSort(int P[], int n) 
 {
   int i, j, aux, continua, fim;
   fim = n;
@@ -41,8 +43,8 @@ void bubbleSort(int P[], int n) ////////////////// bubbleSort
     }
     fim--;
   }while(continua != 0);
-  
 }
+
 /*------------------------------------------------------------------*/
 /*
 INSERTION SORT
@@ -85,6 +87,7 @@ void selectionSort(int P[], int n)
         minIndex = i;
       }
     }
+
     if (P[j] > P[minIndex]) {
       aux = P[j];
       P[j] = P[minIndex];
@@ -112,26 +115,22 @@ Se o vetor estivesse desordenado, em cada passo, ia ordenado mais números*/
 
 int particiona(int P[], int comeco, int fim) {
   int esq, dir, pivo, aux;
-  
   // dir - que avança
   esq = comeco;
   pivo = P[fim]; // Último elemento da lista
-  
   //Esse for exlui o pivô (dir < fim).
   for (dir = comeco; dir < fim; dir +=1) {
     if (P[dir] <= pivo) {
-        aux = P[dir];
-        P[dir] = P[esq];
-        P[esq] = aux;
-        esq += 1; // Avança posição que guarda números menores
+      aux = P[dir];
+      P[dir] = P[esq];
+      P[esq] = aux;
+      esq += 1; // Avança posição que guarda números menores
     }
   }
-    
     // Põe pivô na posição certa dele, que vai ser uma posição depois dos números menores que ele.
   aux = P[esq];
   P[esq] = P[fim];
   P[fim] = aux;
-  
   //retorna índice do pivô na posição certa. Próxima partição vai excluir ele.
   return esq;
 }
@@ -250,28 +249,27 @@ int main()
     switch(op)
     {
       case 1:
-          bubbleSort(P, n);
-          imprimeLista(P, n);
-          break;
+        bubbleSort(P, n);
+        imprimeLista(P, n);
+        break;
       case 2:
-          insertionSort(P, n);
-          imprimeLista(P, n);
-          break;
+        insertionSort(P, n);
+        imprimeLista(P, n);
+        break;
       case 3:
-          selectionSort(P, n);
-          imprimeLista(P, n);
-          break;
-        case 4:
-          mergeSort(P, 0, n-1);
-          imprimeLista(P, n);
-          break;
+        selectionSort(P, n);
+        imprimeLista(P, n);
+        break;
+      case 4:
+        mergeSort(P, 0, n-1);
+        imprimeLista(P, n);
+        break;
       case 5:
-          quickSort(P, 0, n-1);
-          imprimeLista(P, n);
-          break;
-
+        quickSort(P, 0, n-1);
+        imprimeLista(P, n);
+        break;
       default:
-          printf("Digite uma opcao valida\n");
+        printf("Digite uma opcao valida\n");
     }
   } while(op != 6);
 }
